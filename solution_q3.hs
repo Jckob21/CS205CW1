@@ -57,7 +57,7 @@ relativeDirection a b = if a == b then GoForward else GoForward -- GoForward wil
 checkLoop :: [Direction] -> Bool
 checkLoop route = if (0,0) == followDirections (0,0) route then True else False
 
--- this gets rid of loops that go through the same point, for example: 
+-- this gets rid of loops that go through the starting point, for example: 
 -- sanitizeDirection 5 [North,East,South,West,West] will get rid of the loop and will return [West]
 -- it does not sanitize inner loops
 sanitizeDirection :: Int -> [Direction] -> [Direction]
@@ -73,4 +73,3 @@ sanitizeDirections dirs = if ((length sanitizedDirs) == 0) then [] -- when the s
                                     else sanitizeDirections sanitizedDirs
                             }
                             where sanitizedDirs = sanitizeDirection (length dirs) dirs :: [Direction]
-
