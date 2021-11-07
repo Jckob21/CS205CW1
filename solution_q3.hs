@@ -1,20 +1,26 @@
 -- q3 jakub wozny
-data Direction = North | West | South | East
-    deriving (Show,Eq)
+-------------------------------------------------------------------------------
+-------------------------------------  I  -------------------------------------
+-------------------------------------------------------------------------------
+data Direction = North | West | South | East deriving (Show,Eq)
 
---i
+
 followDirection :: (Int,Int) -> Direction -> (Int,Int)
 followDirection (x,y) West = (x-1,y)
 followDirection (x,y) East = (x+1,y)
 followDirection (x,y) South = (x,y-1)
 followDirection (x,y) North = (x,y+1)
 
---ii
+-------------------------------------------------------------------------------
+------------------------------------  II  -------------------------------------
+-------------------------------------------------------------------------------
+
 followDirections :: (Int,Int) -> [Direction] -> (Int,Int)
 followDirections pos [] = pos
 followDirections pos (dir:dirs) = followDirections (followDirection pos dir) dirs
-
---iii
+-------------------------------------------------------------------------------
+------------------------------------  III  ------------------------------------
+-------------------------------------------------------------------------------
 data RelativeDirection = GoForward | GoBack | GoLeft | GoRight
     deriving Show
 
@@ -38,14 +44,14 @@ relativeDirection West South = GoLeft
 relativeDirection West East = GoBack
 relativeDirection a b = if a == b then GoForward else GoForward -- GoForward will not be evaluated, useless
 --relativeDirection a a = GoForward
-
---iv
-
+-------------------------------------------------------------------------------
+------------------------------------  IV  -------------------------------------
+-------------------------------------------------------------------------------
 --this function checks if route given leads to the position given, returns Boolean respectivelly
 checkLoop :: [Direction] -> Bool
 checkLoop route = if (0,0) == followDirections (0,0) route then True else False
 
---this gets rid of loops that go through the same point, for example: 
+-- this gets rid of loops that go through the same point, for example: 
 -- sanitizeDirection 5 [North,East,South,West,West] will get rid of the loop and will return [West]
 -- it does not sanitize inner loops
 sanitizeDirection :: Int -> [Direction] -> [Direction]
@@ -61,3 +67,4 @@ sanitizeDirections dirs = if ((length sanitizedDirs) == 0) then [] -- when the s
                                     else sanitizeDirections sanitizedDirs
                             }
                             where sanitizedDirs = sanitizeDirection (length dirs) dirs :: [Direction]
+
