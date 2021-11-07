@@ -1,4 +1,10 @@
--- q3 jakub wozny
+-- This is demo solution for question 3 prepared by Jakub Wozny (2014114)
+-- TODO:
+-- - Optimize relativeDirection function (iii) if possible
+-- - replace if statement somehow (also relativeDirection)
+-- - test sanitizeDirections (iv)
+-- - optimize sanitizeDirections (iv) if possible
+
 -------------------------------------------------------------------------------
 -------------------------------------  I  -------------------------------------
 -------------------------------------------------------------------------------
