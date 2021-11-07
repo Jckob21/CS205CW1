@@ -57,7 +57,7 @@ sanitizeDirections :: [Direction] -> [Direction]
 sanitizeDirections dirs = if ((length sanitizedDirs) == 0) then [] -- when the sanitized array is empty, the starting point was the same as finish point, therefore there is no need to add the directions
                             else do{
                                 if dirs == sanitizedDirs -- when dirs is equal to sanitized dirs, route was not going through the starting point, therefore first element is not part of a loop and should be kept
-                                    then dirs!!0 : sanitizeDirections (drop 1 dirs)
+                                    then head dirs : sanitizeDirections (tail dirs)
                                     else sanitizeDirections sanitizedDirs
                             }
                             where sanitizedDirs = sanitizeDirection (length dirs) dirs :: [Direction]
