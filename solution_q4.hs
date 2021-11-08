@@ -1,5 +1,9 @@
 -- q4 jakub wozny
 
+-- TODO:
+-- - think about replacing the isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions with isGoXPossible general function (takes RelativeDirection as a parameter)
+-- - add descriptions for isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions
+
 --functions taken from q3 (will be useful)
 
 -----------------------------------------------------------------------------------------------------------------------
