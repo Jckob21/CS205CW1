@@ -153,7 +153,12 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 --getDirectionsOut :: Maze -> Maybe [Direction]
 --getDirectionsOut maze = 
 
-
+-- Wall `elem` [Wall] - checks if Wall is in the list
+isGoLeftPossible :: Maze -> (Int,Int) -> Direction -> Bool
+isGoLeftPossible maze (x,y) North = if (x,y,V) `elem` (getWalls maze) then False else True
+isGoLeftPossible maze (x,y) East = if (x,y+1,H) `elem` (getWalls maze) then False else True
+isGoLeftPossible maze (x,y) South = if (x+1,y,V) `elem` (getWalls maze) then False else True
+isGoLeftPossible maze (x,y) West = if (x,y,H) `elem` (getWalls maze) then False else True
 
 
 getWalls :: Maze -> [Wall]
