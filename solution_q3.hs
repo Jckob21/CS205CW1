@@ -1,7 +1,6 @@
 -- This is demo solution for question 3 prepared by Jakub Wozny (2014114)
 -- TODO:
 -- - Optimize relativeDirection function (iii) if possible
--- - replace if statement somehow (also relativeDirection)
 -- - test sanitizeDirections (iv)
 -- - optimize sanitizeDirections (iv) if possible
 
@@ -56,7 +55,12 @@ relativizeDirections :: Direction -> [Direction] -> [RelativeDirection]
 relativizeDirections pos [] = []
 relativizeDirections pos (dir:dirs) = (relativeDirection pos dir) : (relativizeDirections dir dirs)
 
-
+-- relativeDirection - Taking two directions defines RelativeDirection
+-- Parameters:
+-- Direction - initial cardinal direction
+-- Direction - second cardinal direction that determines relative direction
+-- Output:
+-- RelativeDirection - relative direction of the two cardinal directions
 relativeDirection :: Direction -> Direction -> RelativeDirection
 relativeDirection North East = GoRight
 relativeDirection North West = GoLeft
@@ -75,23 +79,39 @@ relativeDirection _ _  = GoForward
 -------------------------------------------------------------------------------
 ------------------------------------  IV  -------------------------------------
 -------------------------------------------------------------------------------
---this function checks if route given leads to the position given, returns Boolean respectivelly
+
+-- checkLoop - checks if the path given leads to starting point
+-- Parameters:
+-- [Direction] - array of directions forming the path
+-- Output:
+-- Bool - true, if path ends on the same position when it started, false otherwise
 checkLoop :: [Direction] -> Bool
 checkLoop route = if (0,0) == followDirections (0,0) route then True else False
 
--- this gets rid of loops that go through the starting point, for example: 
--- sanitizeDirection 5 [North,East,South,West,West] will get rid of the loop and will return [West]
--- it does not sanitize inner loops
+-- sanitizeDirection - removes parts of the path (sets of Directions) that end on the same position
+-- *** Examples ***
+-- 1) sanitizeDirection 5 [North,East,South,West,West] RESULT: [West], removed loop occuring at indexes 0-3
+-- 2) sanitizeDirection 5 [North,North,East,South,West] RESULT: [North,North,East,South,West] not removed the loop as it starts on index 1
+-- Parameters:
+-- Int - finish index of the part currently checked
+-- [Direction] - array of directions forming the path
+-- Output:
+-- [Direction] - array of directions without parts of the path that end on the same position
 sanitizeDirection :: Int -> [Direction] -> [Direction]
 sanitizeDirection x dirs = if checkLoop (take x dirs)
-                                then drop x dirs --return sanitized Direction array (without loop)
-                                else sanitizeDirection (x-1) dirs --call it with decreased x
+                                then drop x dirs --return sanitized Direction array (without the loop)
+                                else sanitizeDirection (x-1) dirs -- if there was no loop, call it with decreased x
 
+-- sanitizeDirections - sanitizes the path given completely from loops
+-- Parameters:
+-- [Direction] - array of directions forming the path
+-- Output:
+-- [Direction] - sanitized array of directions without any loops
 sanitizeDirections :: [Direction] -> [Direction]
 sanitizeDirections dirs = if ((length sanitizedDirs) == 0) then [] -- when the sanitized array is empty, the starting point was the same as finish point, therefore there is no need to add the directions
                             else do{
-                                if dirs == sanitizedDirs -- when dirs is equal to sanitized dirs, route was not going through the starting point, therefore first element is not part of a loop and should be kept
-                                    then head dirs : sanitizeDirections (tail dirs)
-                                    else sanitizeDirections sanitizedDirs
+                                if dirs == sanitizedDirs 
+                                    then head dirs : sanitizeDirections (tail dirs) -- when dirs is equal to sanitized dirs, route was not going through the starting point, therefore first element is not part of a loop and should be kept
+                                    else sanitizeDirections sanitizedDirs -- if sanitizeDirection removed a loop, there is no element that was checked last time so it calls sanitizeDirections on the new array
                             }
                             where sanitizedDirs = sanitizeDirection (length dirs) dirs :: [Direction]
