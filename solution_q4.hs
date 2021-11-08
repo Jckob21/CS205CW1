@@ -152,3 +152,9 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 
 --getDirectionsOut :: Maze -> Maybe [Direction]
 --getDirectionsOut maze = 
+
+
+
+
+getWalls :: Maze -> [Wall]
+getWalls maze = snd maze
