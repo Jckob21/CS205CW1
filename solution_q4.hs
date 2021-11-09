@@ -4,7 +4,8 @@
 -- - think about replacing the isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions with isGoXPossible general function (takes RelativeDirection as a parameter)
 -- - add descriptions for isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions
 -- - add descriptions for cardinalDirection and goDirectionOut
--- - think about ordering functions differently for q4 (recursive methods, helper methods)
+-- - include checking the maze in getDirectionsOut method as for now there is no Nothing case
+
 
 --functions taken from q3 (will be useful)
 
@@ -159,6 +160,27 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 getDirectionsOut :: Maze -> Maybe [Direction]
 getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 
+goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
+goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) --check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
+                                    then []
+                                    else newDirection : goDirectionsOut maze (transformPosition (x,y) newDirection) newDirection
+                                    where newDirection = goDirectionOut maze (x,y) dir :: Direction
+
+-- given the position in the maze, find next Direction you should go to
+goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
+goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
+                                    then cardinalDirection dir GoLeft
+                                    else do {
+                                        if(isGoForwardPossible maze (x,y) dir)
+                                            then cardinalDirection dir GoForward
+                                            else do {
+                                                if(isGoRightPossible maze (x,y) dir)
+                                                    then cardinalDirection dir GoRight
+                                                    else cardinalDirection dir GoBack
+                                            }
+                                    }
+
+
 isGoLeftPossible :: Maze -> (Int,Int) -> Direction -> Bool
 isGoLeftPossible maze (x,y) North = if (x,y,V) `elem` (getWalls maze) then False else True
 isGoLeftPossible maze (x,y) East = if (x,y+1,H) `elem` (getWalls maze) then False else True
@@ -183,31 +205,11 @@ getMazeSize maze = fst maze
 getWalls :: Maze -> [Wall]
 getWalls maze = snd maze
 
-goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
-goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) --check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
-                                    then []
-                                    else newDirection : goDirectionsOut maze (transformPosition (x,y) newDirection) newDirection
-                                    where newDirection = goDirectionOut maze (x,y) dir :: Direction
-
 transformPosition :: (Int,Int) -> Direction -> (Int,Int)
 transformPosition (x,y) North = (x,y+1)
 transformPosition (x,y) East = (x+1,y)
 transformPosition (x,y) South = (x,y-1)
 transformPosition (x,y) West = (x-1,y)
-
--- given the position in the maze, find next Direction you should go to
-goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
-goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
-                                    then cardinalDirection dir GoLeft
-                                    else do {
-                                        if(isGoForwardPossible maze (x,y) dir)
-                                            then cardinalDirection dir GoForward
-                                            else do {
-                                                if(isGoRightPossible maze (x,y) dir)
-                                                    then cardinalDirection dir GoRight
-                                                    else cardinalDirection dir GoBack
-                                            }
-                                    }
 
 -- computes Direction based on cardinal direction and relative direction
 cardinalDirection :: Direction -> RelativeDirection -> Direction
