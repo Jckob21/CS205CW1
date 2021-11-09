@@ -156,8 +156,8 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 ---------------------------------  solution  ----------------------------------
 -------------------------------------------------------------------------------
 
---getDirectionsOut :: Maze -> Maybe [Direction]
---getDirectionsOut maze = 
+getDirectionsOut :: Maze -> Maybe [Direction]
+getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 
 isGoLeftPossible :: Maze -> (Int,Int) -> Direction -> Bool
 isGoLeftPossible maze (x,y) North = if (x,y,V) `elem` (getWalls maze) then False else True
