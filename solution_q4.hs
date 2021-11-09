@@ -178,7 +178,7 @@ getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
 goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) -- check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
                                     then []
-                                    else newDirection : goDirectionsOut maze (transformPosition (x,y) newDirection) newDirection
+                                    else newDirection : goDirectionsOut maze (followDirection (x,y) newDirection) newDirection
                                     where newDirection = goDirectionOut maze (x,y) dir :: Direction
 
 -- goDirectionsOut - given the position in the maze, finds next Direction according to
@@ -256,13 +256,6 @@ getMazeSize maze = fst maze
 -- [Wall] - the walls of the Maze
 getWalls :: Maze -> [Wall]
 getWalls maze = snd maze
-
--- to be deleted, same as followDirection
-transformPosition :: (Int,Int) -> Direction -> (Int,Int)
-transformPosition (x,y) North = (x,y+1)
-transformPosition (x,y) East = (x+1,y)
-transformPosition (x,y) South = (x,y-1)
-transformPosition (x,y) West = (x-1,y)
 
 -- cardinalDirection - gets direction based on initial direction and orientation
 -- Parameters:
