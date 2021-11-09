@@ -178,10 +178,20 @@ isGoRightPossible maze (x,y) West = if (x,y+1,H) `elem` (getWalls maze) then Fal
 getWalls :: Maze -> [Wall]
 getWalls maze = snd maze
 
---goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
---goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
- --                                   then -- return Direction on the left side from cardinal direction given
+goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
+goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
+                                    then cardinalDirection dir GoLeft
+                                    else do {
+                                        if(isGoForwardPossible maze (x,y) dir)
+                                            then cardinalDirection dir GoForward
+                                            else do {
+                                                if(isGoRightPossible maze (x,y) dir)
+                                                    then cardinalDirection dir GoRight
+                                                    else cardinalDirection dir GoBack
+                                            }
+                                    }
 
+-- computes Direction based on cardinal direction and relative direction
 cardinalDirection :: Direction -> RelativeDirection -> Direction
 cardinalDirection North GoLeft = West
 cardinalDirection North GoBack = South
