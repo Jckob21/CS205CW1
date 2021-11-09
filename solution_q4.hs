@@ -6,6 +6,8 @@
 -- - add descriptions for cardinalDirection and goDirectionOut
 -- - include checking the maze in getDirectionsOut method as for now there is no Nothing case
 -- - followDirection is the same as transformPosition, get rid of the duplicate and don't brake the code
+-- - getDirectionsOut musi mieć ifa który wykorzystuje funkcje isPossibleToGetOut i jeśli ona jest false to zrobić to co robi teraz
+-- - isPossibleToGetOut - generuje droge według algorytmu, jeśli (path - ostatni element) jest pętlą i ostatni element == pierwszy to jest loop(false), jak wyjdzie poza to jest true
 
 --functions taken from q3 (will be useful)
 
@@ -174,7 +176,7 @@ getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 -- Output:
 -- [Direction] - array of directions indicating the path to solve the maze
 goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
-goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) --check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
+goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) -- check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
                                     then []
                                     else newDirection : goDirectionsOut maze (transformPosition (x,y) newDirection) newDirection
                                     where newDirection = goDirectionOut maze (x,y) dir :: Direction
