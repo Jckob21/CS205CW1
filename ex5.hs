@@ -18,16 +18,9 @@ diff a b = abs (a-b)
 complete :: Btree a -> Bool
 
 complete (Binary l x r) = if complete l && complete r && diff (depth l) (depth r) <= 1 && isUnary l
-                            then do{
-                               if perfect r || isUnary r
-                               then False
-                               else True
-                              }
-                            else do{
-                                if isUnary l && perfect r 
-                                then False
-                                else True
-                            }
+                            then not (perfect r || isUnary r)
+                            else not (isUnary l && perfect r)
+                            
 complete (Leaf x) = True
 complete (Unary l x) = lastLeaf l
 
@@ -43,11 +36,9 @@ lastLeaf (Leaf x) = True
 
 perfect :: Btree a -> Bool
 
-perfect (Binary l x r) = if perfect l && perfect r
-                         then True
-                         else False
+perfect (Binary l x r) = perfect l && perfect r
 perfect (Unary l x) = False
-perfect (Leaf x) = True 
+perfect (Leaf x) = True
 
 
 depth :: Btree a -> Int
@@ -72,9 +63,9 @@ depth (Unary left x) = 1 + depth left
 
 lookupInSearchTree2 :: Integer -> Btree (Integer, a) -> Maybe a
 
-lookupInSearchTree2 k (Leaf(x, v)) | k == x     = Just y 
+lookupInSearchTree2 k (Leaf(x, v)) | k == x     = Just y
                                    | otherwise  = Nothing
-                                    where y = v 
+                                    where y = v
 
 --lookupInSearchTree2 k (Leaf(x, _)) = Nothing 
 
@@ -82,16 +73,21 @@ lookupInSearchTree2 k (Leaf(x, v)) | k == x     = Just y
 lookupInSearchTree2 k (Binary l (x,v) r) | k == x       = Just result
                                          | k < x        = lookupInSearchTree2 k l
                                          | k > x        = lookupInSearchTree2 k r
-                                          where result = v  
+                                          where result = v
 
-lookupInSearchTree2 k (Unary l (x,v)) | k == x      = Just wynik
+lookupInSearchTree2 k (Unary l (x,v)) | k == x      = Just solution
                                       | k < x       = lookupInSearchTree2 k l
-                                       where wynik = v 
+                                       where solution = v
 
 -------------------------------------------------------------------------------
 ------------------------------------  III  ------------------------------------
 -------------------------------------------------------------------------------
 
---insertInSearchTree :: Int -> a -> Btree (Int,a) -> Btree (Int,a)
+insertInSearchTree :: Integer -> a -> Btree (Integer,a) -> Btree (Integer,a)
 
---insertInSearchTree k chr (Leaf (x,y)) = 
+insertInSearchTree k chr (Leaf(x,y)) = Unary newleft (x,y)
+                                       where newleft = Leaf(k,chr)
+
+insertInSearchTree k chr (Binary l (x,y) r) = insertInSearchTree k chr l
+
+insertInSearchTree k chr (Unary l (x,y)) =  Binary l (x,y) (Leaf(k,chr))
