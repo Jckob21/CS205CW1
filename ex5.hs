@@ -7,6 +7,11 @@ ex3 = Binary (Binary (Leaf 0) 1 (Leaf 2)) 3 (Unary (Leaf 4) 5)
 ex4 = Binary (Unary (Leaf 1) 2) 3 (Unary (Leaf 4) 5)
 ex5 = Binary (Unary (Leaf 1) 2) 3 (Binary (Leaf 4) 5 (Leaf 10))
 ex6 = Leaf 10
+ex7 = Leaf (10, "a")
+
+-------------------------------------------------------------------------------
+-------------------------------------  I  -------------------------------------
+-------------------------------------------------------------------------------
 
 diff a b = abs (a-b)
 
@@ -23,7 +28,6 @@ complete (Binary l x r) = if complete l && complete r && diff (depth l) (depth r
                                 then False
                                 else True
                             }
-
 complete (Leaf x) = True
 complete (Unary l x) = lastLeaf l
 
@@ -44,9 +48,50 @@ perfect (Binary l x r) = if perfect l && perfect r
                          else False
 perfect (Unary l x) = False
 perfect (Leaf x) = True 
- 
+
 
 depth :: Btree a -> Int
 depth (Leaf x) = 0
 depth (Binary left x right) = 1 + min (depth left) (depth right)
 depth (Unary left x) = 1 + depth left
+
+-------------------------------------------------------------------------------
+-------------------------------------  II  ------------------------------------
+-------------------------------------------------------------------------------
+
+
+-- value t is called "search tree" if the root of every subtree of t is either a leaf or a unary or a binary
+--t = Btree (Int, a)
+
+-- All values contained in l have first components <= x
+-- Unary l (x, v)
+
+-- All values contained in l have first components <= x, and those contained in r have first components >= x
+-- Binary l (x,v) r 
+
+
+lookupInSearchTree2 :: Integer -> Btree (Integer, a) -> Maybe a
+
+lookupInSearchTree2 k (Leaf(x, v)) | k == x     = Just y 
+                                   | otherwise  = Nothing
+                                    where y = v 
+
+--lookupInSearchTree2 k (Leaf(x, _)) = Nothing 
+
+
+lookupInSearchTree2 k (Binary l (x,v) r) | k == x       = Just result
+                                         | k < x        = lookupInSearchTree2 k l
+                                         | k > x        = lookupInSearchTree2 k r
+                                          where result = v  
+
+lookupInSearchTree2 k (Unary l (x,v)) | k == x      = Just wynik
+                                      | k < x       = lookupInSearchTree2 k l
+                                       where wynik = v 
+
+-------------------------------------------------------------------------------
+------------------------------------  III  ------------------------------------
+-------------------------------------------------------------------------------
+
+--insertInSearchTree :: Int -> a -> Btree (Int,a) -> Btree (Int,a)
+
+--insertInSearchTree k chr (Leaf (x,y)) = 
