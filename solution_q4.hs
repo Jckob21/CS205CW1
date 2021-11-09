@@ -157,16 +157,36 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 ---------------------------------  solution  ----------------------------------
 -------------------------------------------------------------------------------
 
+-- getDirectionsOut - solves maze with approach "always turning in the most leftward direction possible"
+-- Parameters:
+-- Maze - maze to be solved
+-- Output:
+-- Maybe [Direction] - If maze is possible to be solved, Just xs is returned (where xs is an array of directions
+--                          that indicate the path), Nothing otherwise
 getDirectionsOut :: Maze -> Maybe [Direction]
 getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 
+-- goDirectionsOut - given a position and a direction algorithm recursively finds a path to the exit  
+-- Parameters:
+-- Maze - maze to be solved
+-- (Int,Int) - current position algorithm is pointing to
+-- Direction - last direction algorithm came from
+-- Output:
+-- [Direction] - array of directions indicating the path to solve the maze
 goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
 goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) --check if position is out of maze (solved) assuming exit on the right side because of cw1 doc
                                     then []
                                     else newDirection : goDirectionsOut maze (transformPosition (x,y) newDirection) newDirection
                                     where newDirection = goDirectionOut maze (x,y) dir :: Direction
 
--- given the position in the maze, find next Direction you should go to
+-- goDirectionsOut - given the position in the maze, finds next Direction according to
+--                      "always turning in the most leftward direction possible" approach    
+-- Parameters:
+-- Maze - maze to be solved
+-- (Int,Int) - position where the algorithm is pointing to
+-- Direction - Last direction algorithm came from
+-- Output:
+-- Direction - next Direction of the path
 goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
 goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
                                     then cardinalDirection dir GoLeft
