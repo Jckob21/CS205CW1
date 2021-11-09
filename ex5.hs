@@ -44,7 +44,7 @@ perfect (Binary l x r) = if perfect l && perfect r
                          else False
 perfect (Unary l x) = False
 perfect (Leaf x) = True 
-
+ 
 
 depth :: Btree a -> Int
 depth (Leaf x) = 0
