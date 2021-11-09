@@ -4,6 +4,7 @@
 -- - think about replacing the isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions with isGoXPossible general function (takes RelativeDirection as a parameter)
 -- - add descriptions for isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions
 -- - add descriptions for cardinalDirection and goDirectionOut
+-- - think about ordering functions differently for q4 (recursive methods, helper methods)
 
 --functions taken from q3 (will be useful)
 
@@ -176,9 +177,17 @@ isGoRightPossible maze (x,y) East = if (x,y,H) `elem` (getWalls maze) then False
 isGoRightPossible maze (x,y) South = if (x,y,V) `elem` (getWalls maze) then False else True
 isGoRightPossible maze (x,y) West = if (x,y+1,H) `elem` (getWalls maze) then False else True
 
+getMazeSize :: Maze -> (Int,Int)
+getMazeSize maze = fst maze
+
 getWalls :: Maze -> [Wall]
 getWalls maze = snd maze
 
+--goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
+--goDirectionsOut maze (x,y) dir = if
+
+
+-- given the position in the maze, find next Direction you should go to
 goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
 goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
                                     then cardinalDirection dir GoLeft
