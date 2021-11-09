@@ -5,7 +5,7 @@
 -- - add descriptions for isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions
 -- - add descriptions for cardinalDirection and goDirectionOut
 -- - include checking the maze in getDirectionsOut method as for now there is no Nothing case
-
+-- - followDirection is the same as transformPosition, get rid of the duplicate and don't brake the code
 
 --functions taken from q3 (will be useful)
 
@@ -170,7 +170,7 @@ getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 -- Parameters:
 -- Maze - maze to be solved
 -- (Int,Int) - current position algorithm is pointing to
--- Direction - last direction algorithm came from
+-- Direction - last direction algorithm used (orientation)
 -- Output:
 -- [Direction] - array of directions indicating the path to solve the maze
 goDirectionsOut :: Maze -> (Int,Int) -> Direction -> [Direction]
@@ -184,7 +184,7 @@ goDirectionsOut maze (x,y) dir = if(x >= fst (getMazeSize maze)) --check if posi
 -- Parameters:
 -- Maze - maze to be solved
 -- (Int,Int) - position where the algorithm is pointing to
--- Direction - Last direction algorithm came from
+-- Direction - last direction algorithm used (orientation)
 -- Output:
 -- Direction - next Direction of the path
 goDirectionOut :: Maze -> (Int,Int) -> Direction -> Direction
@@ -200,38 +200,74 @@ goDirectionOut maze (x,y) dir = if(isGoLeftPossible maze (x,y) dir)
                                             }
                                     }
 
-
+-- isGoLeftPossible - based on given position and orientation, checks if you can go left in given maze
+-- Parameters:
+-- Maze - maze to be solved
+-- (Int,Int) - current position
+-- Direction - orientation
+-- Output:
+-- Bool - True if you can go left from that position, false otherwise
 isGoLeftPossible :: Maze -> (Int,Int) -> Direction -> Bool
 isGoLeftPossible maze (x,y) North = if (x,y,V) `elem` (getWalls maze) then False else True
 isGoLeftPossible maze (x,y) East = if (x,y+1,H) `elem` (getWalls maze) then False else True
 isGoLeftPossible maze (x,y) South = if (x+1,y,V) `elem` (getWalls maze) then False else True
 isGoLeftPossible maze (x,y) West = if (x,y,H) `elem` (getWalls maze) then False else True
 
+-- isGoForwardPossible - based on given position and orientation, checks if you can go forward in given maze
+-- Parameters:
+-- Maze - maze to be solved
+-- (Int,Int) - current position
+-- Direction - orientation
+-- Output:
+-- Bool - True if you can go forward from that position, false otherwise
 isGoForwardPossible :: Maze -> (Int,Int) -> Direction -> Bool
 isGoForwardPossible maze (x,y) North = if (x,y+1,H) `elem` (getWalls maze) then False else True
 isGoForwardPossible maze (x,y) East = if (x+1,y,V) `elem` (getWalls maze) then False else True
 isGoForwardPossible maze (x,y) South = if (x,y,H) `elem` (getWalls maze) then False else True
 isGoForwardPossible maze (x,y) West = if (x,y,V) `elem` (getWalls maze) then False else True
 
+-- isGoLeftPossible - based on given position and orientation, checks if you can go right in given maze
+-- Parameters:
+-- Maze - maze to be solved
+-- (Int,Int) - current position
+-- Direction - orientation
+-- Output:
+-- Bool - True if you can go right from that position, false otherwise
 isGoRightPossible :: Maze -> (Int,Int) -> Direction -> Bool
 isGoRightPossible maze (x,y) North = if (x+1,y,V) `elem` (getWalls maze) then False else True
 isGoRightPossible maze (x,y) East = if (x,y,H) `elem` (getWalls maze) then False else True
 isGoRightPossible maze (x,y) South = if (x,y,V) `elem` (getWalls maze) then False else True
 isGoRightPossible maze (x,y) West = if (x,y+1,H) `elem` (getWalls maze) then False else True
 
+-- getMazeSize - gets size of the maze given
+-- Parameters:
+-- Maze - the maze to get size of
+-- Output:
+-- (Int,Int) - size of the Maze, where first Int represents width, second Int represents Height
 getMazeSize :: Maze -> (Int,Int)
 getMazeSize maze = fst maze
 
+-- getWalls - gets walls of the maze given
+-- Parameters:
+-- Maze - the maze to get walls of
+-- Output:
+-- [Wall] - the walls of the Maze
 getWalls :: Maze -> [Wall]
 getWalls maze = snd maze
 
+-- to be deleted, same as followDirection
 transformPosition :: (Int,Int) -> Direction -> (Int,Int)
 transformPosition (x,y) North = (x,y+1)
 transformPosition (x,y) East = (x+1,y)
 transformPosition (x,y) South = (x,y-1)
 transformPosition (x,y) West = (x-1,y)
 
--- computes Direction based on cardinal direction and relative direction
+-- cardinalDirection - gets direction based on initial direction and orientation
+-- Parameters:
+-- Direction - initial Direction
+-- RelativeDirection - relative direction defining change of the orientation
+-- Output:
+-- Direction - new direction after changing the orientation
 cardinalDirection :: Direction -> RelativeDirection -> Direction
 cardinalDirection North GoLeft = West
 cardinalDirection North GoBack = South
