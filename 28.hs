@@ -1,4 +1,9 @@
--- napisac info o grupie 
+-- GROUP NUMBER: 28
+-- MEMBERS:
+-- Jakub Wozny (2014114)
+-- Przemek Rabczak (2013650)
+-- Kacper Rozwadowski (2024343)
+-- Please note: Our solution is based on coursework document from 09/11/2021
 
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
@@ -24,37 +29,25 @@ howManyBelowAverage x y z = do {
           b = fromIntegral y :: Float
           c = fromIntegral z :: Float
 
-howManyBelowAverage1 :: Int -> Int -> Int -> Int
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z > 0 && checkZ x y z > 0   = 3 
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z > 0 && checkZ x y z <= 0  = 2 
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z > 0   = 2
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z <= 0   = 1
-howManyBelowAverage1 x y z | checkX x y z <= 0 && checkY x y z > 0 && checkZ x y z > 0   = 2 
-howManyBelowAverage1 x y z | checkX x y z <= 0 && checkY x y z > 0 && checkZ x y z <= 0   = 1
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z > 0   = 1
-howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z <= 0   = 0
+howManyBelowAverage2 :: Int -> Int -> Int -> Int
+howManyBelowAverage2 x y z | a < ((a+b+c)/3) && b < ((a+b+c)/3) = 2
+                           | a < ((a+b+c)/3) && c < ((a+b+c)/3) = 2
+                           | b < ((a+b+c)/3) && c < ((a+b+c)/3) = 2
+                           | a < ((a+b+c)/3) = 1
+                           | b < ((a+b+c)/3) = 1
+                           | c < ((a+b+c)/3) = 1
+                           | otherwise = 0
+                            where a = fromIntegral x :: Float
+                                  b = fromIntegral y :: Float
+                                  c = fromIntegral z :: Float
 
 
-computeAverage :: Int -> Int -> Int -> Float
+                                  
+q1Test :: Int -> Int -> Int -> Bool 
+q1Test x y z = howManyBelowAverage x y z == howManyBelowAverage2 x y z
 
-computeAverage x y z = (a + b + c) / 3
-                        where a = fromIntegral x :: Float
-                              b = fromIntegral z :: Float
-                              c = fromIntegral y :: Float
-
-checkX :: Int -> Int -> Int -> Int
-checkX x y z  | a < computeAverage x y z     = x
-              | a >= computeAverage x y z     = 0
-                where a = fromIntegral x :: Float
-checkY :: Int -> Int -> Int -> Int
-checkY x y z  | b < computeAverage x y z     = y
-              | b >= computeAverage x y z     = 0
-                where b = fromIntegral y :: Float
-
-checkZ :: Int -> Int -> Int -> Int
-checkZ x y z  | c < computeAverage x y z     = z
-              | c >= computeAverage x y z     = 0
-                where c = fromIntegral z :: Float
+do1qTest :: Bool
+do1qTest = q1Test 2014114 2013650 2024343
 
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
