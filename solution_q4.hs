@@ -168,6 +168,17 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
 getDirectionsOut :: Maze -> Maybe [Direction]
 getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
 
+checkIfPossibleToSolve :: Maze -> (Int,Int) -> Direction -> [Direction] -> Bool
+checkIfPossibleToSolve maze (x,y) dir route = if (x >= fst (getMazeSize maze))
+                                            then True
+                                            else do {
+                                                if(length route > 2 && checkLoop (take (length route - 1) route) && route!!0 == route!!(length route - 1))
+                                                    then False
+                                                    else checkIfPossibleToSolve maze (followDirection (x,y) newDirection) newDirection (route ++ [newDirection])
+                                            }
+                                            where newDirection = goDirectionOut maze (x,y) dir :: Direction
+    
+
 -- goDirectionsOut - given a position and a direction algorithm recursively finds a path to the exit  
 -- Parameters:
 -- Maze - maze to be solved
