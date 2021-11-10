@@ -1,3 +1,4 @@
+import Data.List (sort)
 -- napisac info o grupie 
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -426,22 +427,22 @@ depth (Unary left x) = 1 + depth left
 -- Binary l (x,v) r 
 
 
-lookupInSearchTree2 :: Integer -> Btree (Integer, a) -> Maybe a
+lookupInSearchTree :: Integer -> Btree (Integer, a) -> Maybe a
 
-lookupInSearchTree2 k (Leaf(x, v)) | k == x     = Just y
+lookupInSearchTree k (Leaf(x, v)) | k == x     = Just y
                                    | otherwise  = Nothing
                                     where y = v
 
---lookupInSearchTree2 k (Leaf(x, _)) = Nothing 
+--lookupInSearchTree k (Leaf(x, _)) = Nothing 
 
 
-lookupInSearchTree2 k (Binary l (x,v) r) | k == x       = Just result
-                                         | k < x        = lookupInSearchTree2 k l
-                                         | k > x        = lookupInSearchTree2 k r
+lookupInSearchTree k (Binary l (x,v) r) | k == x       = Just result
+                                         | k < x        = lookupInSearchTree k l
+                                         | k > x        = lookupInSearchTree k r
                                           where result = v
 
-lookupInSearchTree2 k (Unary l (x,v)) | k == x      = Just solution
-                                      | k < x       = lookupInSearchTree2 k l
+lookupInSearchTree k (Unary l (x,v)) | k == x      = Just solution
+                                      | k < x       = lookupInSearchTree k l
                                        where solution = v
 
 -------------------------------------------------------------------------------
@@ -466,31 +467,154 @@ insertInSearchTree k chr (Unary l (x,y)) =  Binary l (x,y) (Leaf(k,chr))
 --------------------------------------------------------- TESTY -------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
---tests are named : testABC, where A is the question, B is the part of the question(only for Q3 and Q5) and C is the test number
---Q2:
+--tests are named : testAqBC, where A is the test number, B is the question number and C is the part of the question(only for Q3 and Q5)
+-- range of A: 1-3 (for Q5 it is 1-6 in A part of the question)
+---------------------------------------------------------------Q2:
 
 --test1
-test11 :: IO()
-test11 = if(pizzaPricing 30.0 3 3 == 7.55)
-    then putStrLn "test1 - positive"
-    else putStrLn "test1 - negative"
+test1q1 :: IO()
+test1q1 = if(pizzaPricing 30.0 3 3 == 7.55)
+    then putStrLn "positive"
+    else putStrLn "negative"
 
 --test2
-test12 :: IO()
-test12 = if(pizzaPricing 10.0 10 0 == 1.41)
-    then putStrLn "test2 - positive"
-    else putStrLn "test2 - negative"
+test2q1 :: IO()
+test2q1 = if(pizzaPricing 10.0 10 0 == 1.41)
+    then putStrLn "positive"
+    else putStrLn "negative"
 
 --test3
-test13 :: IO()
-test13 = if(pizzaPricing 0 5 20 == 15.0)
-    then putStrLn "test2 - positive"
-    else putStrLn "test2 - negative"
-	
-	
-	
-	
-	
-	
-	
-	
+test3q1 :: IO()
+test3q1 = if(pizzaPricing 0 5 20 == 15.0)
+    then putStrLn "positive"
+    else putStrLn "negative"
+---------------------------------------------------------------Q3:
+
+--test1A
+test1q3A :: IO()
+test1q3A = if(followDirection (53,13) South == (53,12))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test2A
+test2q3A :: IO()
+test2q3A = if(followDirection (followDirection (followDirection(224,8) East) West) North == (224,9))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test3A
+test3q3A :: IO()
+test3q3A = if(followDirection (followDirection (10,14) East) North == (11,15))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test1B
+test1q3B :: IO()
+test1q3B = if(followDirections (10,0) [North,North,North,North,North,North] == (10,6))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test2B
+test2q3B :: IO()
+test2q3B = if(followDirections (0,0) [North,South,North,South,West,East,West,East] == (0,0))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test3B
+test3q3B :: IO()
+test3q3B = if(followDirections (-10,-10) [East,East,North,East,West,West] == (-9,-9))
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test1C
+--test1q3C :: IO()
+--test1q3C = if(relativizeDirections West [East,West,West,West,West,North] == [GoBack,GoBack,GoForward,GoForward,GoForward,GoRight])
+--    then putStrLn "positive"
+--    else putStrLn "negative"
+
+--test2C
+--test2q3C :: IO()
+--test2q3C = if(relativizeDirections East [North,North,West,West,East,West] == [GoLeft,GoForward,GoLeft,GoForward,GoBack,GoBack])
+--    then putStrLn "positive"
+--    else putStrLn "negative"
+
+--test3C
+--test3q3C :: IO()
+--test3q3C = if(relativizeDirections South [East,South,North,West,West,West] == [GoLeft,GoRight,GoBack,GoLeft,GoForward,GoForward])
+--    then putStrLn "positive"
+--    else putStrLn "negative"
+
+--test1D
+test1q3D :: IO()
+test1q3D = if(sanitizeDirections [North,West,West,South,West,East,South,North,North] == [North,West,West])
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test2D
+test2q3D :: IO()
+test2q3D = if(sanitizeDirections [East,North,East,South,East,East,West,South,North] == [East,North,East,South,East])
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test3D
+test3q3D :: IO()
+test3q3D = if(sanitizeDirections [South,South,West,West,East,North,South,South,West] == [South,South,West,South,West])
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+
+---------------------------------------------------------------Q5:
+
+--test1A
+test1q5A :: IO()
+test1q5A = if(complete ex2 == True)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test2A
+test2q5A :: IO()
+test2q5A = if(complete ex1 == False)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test3A
+test3q5A :: IO()
+test3q5A = if(complete ex3 == False)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test4A
+test4q5A :: IO()
+test4q5A = if(perfect ex1 == False)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test5A
+test5q5A :: IO()
+test5q5A = if(perfect ex5 == True)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test6A
+test6q5A :: IO()
+test6q5A = if(perfect ex4 == False)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test1B
+test1q5B :: IO()
+test1q5B = if(lookupInSearchTree 50 ex5 == Nothing)
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test2B
+test2q5B :: IO()
+test2q5B = if(lookupInSearchTree 4 ex5 == Just "b")
+    then putStrLn "positive"
+    else putStrLn "negative"
+
+--test3B
+test3q5B :: IO()
+test3q5B = if(lookupInSearchTree 1 ex5 == Just "z")
+    then putStrLn "positive"
+    else putStrLn "negative"
