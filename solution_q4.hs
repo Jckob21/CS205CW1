@@ -155,6 +155,31 @@ exampleMaze = ((4,4), hWalls ++ vWalls)
                 (2,2),
                 (0,4),(1,4),(2,4),(3,4)]
 
+-- our examples of mazes to test algorithm
+exampleMazeOur1 :: Maze -- not solvable
+exampleMazeOur1 = ((3,3), hWalls ++ vWalls)
+    where   vWalls = map (\ (i,j) -> (i,j,V)) [ -- vertical walls, iterated by columns
+                (0,0),(0,1),(0,2),
+                (1,1),(1,2),
+                (3,0),(3,1)]
+            hWalls = map (\ (i,j) -> (i,j,H)) [ -- horizontal walls, iterated by rows
+                (0,0),(1,0),(2,0),
+                (1,1),(2,1),
+                (1,2),
+                (0,3),(1,3),(2,3)]
+
+exampleMazeOur2 :: Maze -- solvable
+exampleMazeOur2 = ((3,3), hWalls ++ vWalls)
+    where   vWalls = map (\ (i,j) -> (i,j,V)) [ -- vertical walls, iterated by columns
+                (0,0),(0,1),(0,2),
+                (1,1),(1,2),
+                (3,0),(3,1)]
+            hWalls = map (\ (i,j) -> (i,j,H)) [ -- horizontal walls, iterated by rows
+                (0,0),(1,0),(2,0),
+                (1,1),
+                (1,2),
+                (0,3),(1,3),(2,3)]
+
 -------------------------------------------------------------------------------
 ---------------------------------  solution  ----------------------------------
 -------------------------------------------------------------------------------
