@@ -1,14 +1,5 @@
 -- q4 jakub wozny
 
--- TODO:
--- - think about replacing the isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions with isGoXPossible general function (takes RelativeDirection as a parameter)
--- - add descriptions for isGoLeftPossible, isGoForwardPossible and isGoRightPossible functions
--- - add descriptions for cardinalDirection and goDirectionOut
--- - include checking the maze in getDirectionsOut method as for now there is no Nothing case
--- - followDirection is the same as transformPosition, get rid of the duplicate and don't brake the code
--- - getDirectionsOut musi mieć ifa który wykorzystuje funkcje isPossibleToGetOut i jeśli ona jest false to zrobić to co robi teraz
--- - isPossibleToGetOut - generuje droge według algorytmu, jeśli (path - ostatni element) jest pętlą i ostatni element == pierwszy to jest loop(false), jak wyjdzie poza to jest true
-
 --functions taken from q3 (will be useful)
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -207,6 +198,15 @@ getDirectionsOut maze = if((isStartingPositionOpen maze) && (checkIfPossibleToSo
                             then Just (goDirectionsOut maze (0,0) North)
                             else Nothing
 
+-- checkIfPossibleToSolve - checks if maze is possible to solve (has a way out)
+-- WARNING: IT DOES NOT CHECK WHETHER FIRST POSSITION IS OPEN
+-- Parameters:
+-- Maze - maze
+-- (Int,Int) - current position algorithm is pointing to
+-- Direction - last direction algorithm used (orientation)
+-- [Direction] - array of directions indicating how the algorithm got to the current point (by default [])
+-- Output:
+-- Bool - True if you can solve the maze, false otherwise
 checkIfPossibleToSolve :: Maze -> (Int,Int) -> Direction -> [Direction] -> Bool
 checkIfPossibleToSolve maze (x,y) dir route = if (x >= fst (getMazeSize maze))
                                             then True
@@ -217,6 +217,11 @@ checkIfPossibleToSolve maze (x,y) dir route = if (x >= fst (getMazeSize maze))
                                             }
                                             where newDirection = goDirectionOut maze (x,y) dir :: Direction
 
+-- isStartingPositionOpen - checks if starting position in maze has any way to go 
+-- Parameters:
+-- Maze - maze
+-- Output:
+-- Bool - True if you can go forward or right, false otherwise
 isStartingPositionOpen :: Maze -> Bool
 isStartingPositionOpen maze = if(isGoForwardPossible maze (0,0) North || isGoRightPossible maze (0,0) North)
                                 then True
