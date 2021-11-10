@@ -180,6 +180,18 @@ exampleMazeOur2 = ((3,3), hWalls ++ vWalls)
                 (1,2),
                 (0,3),(1,3),(2,3)]
 
+exampleMazeOur3 :: Maze -- non-solvable, starting position closed
+exampleMazeOur3 = ((3,3), hWalls ++ vWalls)
+    where   vWalls = map (\ (i,j) -> (i,j,V)) [ -- vertical walls, iterated by columns
+                (0,0),(0,1),(0,2),
+                (1,0),(1,1),(1,2),
+                (3,0),(3,1)]
+            hWalls = map (\ (i,j) -> (i,j,H)) [ -- horizontal walls, iterated by rows
+                (0,0),(1,0),(2,0),
+                (0,1),(1,1),
+                (1,2),
+                (0,3),(1,3),(2,3)]
+
 -------------------------------------------------------------------------------
 ---------------------------------  solution  ----------------------------------
 -------------------------------------------------------------------------------
