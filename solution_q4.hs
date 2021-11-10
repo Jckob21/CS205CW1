@@ -203,7 +203,9 @@ exampleMazeOur3 = ((3,3), hWalls ++ vWalls)
 -- Maybe [Direction] - If maze is possible to be solved, Just xs is returned (where xs is an array of directions
 --                          that indicate the path), Nothing otherwise
 getDirectionsOut :: Maze -> Maybe [Direction]
-getDirectionsOut maze = Just (goDirectionsOut maze (0,0) North)
+getDirectionsOut maze = if((isStartingPositionOpen maze) && (checkIfPossibleToSolve maze (0,0) North []))
+                            then Just (goDirectionsOut maze (0,0) North)
+                            else Nothing
 
 checkIfPossibleToSolve :: Maze -> (Int,Int) -> Direction -> [Direction] -> Bool
 checkIfPossibleToSolve maze (x,y) dir route = if (x >= fst (getMazeSize maze))
