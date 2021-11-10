@@ -466,15 +466,31 @@ insertInSearchTree k chr (Unary l (x,y)) =  Binary l (x,y) (Leaf(k,chr))
 --------------------------------------------------------- TESTY -------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------
+--tests are named : testABC, where A is the question, B is the part of the question(only for Q3 and Q5) and C is the test number
+--Q2:
 
--- pizzaPricing test1
-test1 :: IO()
-test1 = if(pizzaPricing 10.0 1 20 == 1000)
+--test1
+test11 :: IO()
+test11 = if(pizzaPricing 30.0 3 3 == 7.55)
     then putStrLn "test1 - positive"
     else putStrLn "test1 - negative"
 
--- pizzaPricing test2
-test2 :: IO()
-test2 = if(pizzaPricing 10.0 1 20 == 1000)
+--test2
+test12 :: IO()
+test12 = if(pizzaPricing 10.0 10 0 == 1.41)
     then putStrLn "test2 - positive"
     else putStrLn "test2 - negative"
+
+--test3
+test13 :: IO()
+test13 = if(pizzaPricing 0 5 20 == 15.0)
+    then putStrLn "test2 - positive"
+    else putStrLn "test2 - negative"
+	
+	
+	
+	
+	
+	
+	
+	
