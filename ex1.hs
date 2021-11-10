@@ -30,33 +30,15 @@ howManyBelowAverage x y z = if checkX x y z > 0
 
                            
 howManyBelowAverage1 :: Int -> Int -> Int -> Int
-howManyBelowAverage1 x y z = if checkX x y z > 0
-                            then do{
-                                if checkY x y z > 0
-                                    then do{
-                                        if checkZ x y z > 0
-                                            then 3
-                                            else 2
-                                    }
-                                    else do{
-                                        if checkZ x y z > 0
-                                            then 2
-                                            else 1
-                                    }
-                            }
-                            else do{
-                                if checkY x y z > 0
-                                    then do{
-                                        if checkZ x y z > 0
-                                            then 2
-                                            else 1
-                                    }
-                                    else do{
-                                        if checkZ x y z > 0
-                                            then 1
-                                            else 0
-                                    }
-                            }
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z > 0 && checkZ x y z > 0   = 3 
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z > 0 && checkZ x y z <= 0  = 2 
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z > 0   = 2
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z <= 0   = 1
+howManyBelowAverage1 x y z | checkX x y z <= 0 && checkY x y z > 0 && checkZ x y z > 0   = 2 
+howManyBelowAverage1 x y z | checkX x y z <= 0 && checkY x y z > 0 && checkZ x y z <= 0   = 1
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z > 0   = 1
+howManyBelowAverage1 x y z | checkX x y z > 0 && checkY x y z <= 0 && checkZ x y z <= 0   = 0
+
 
 computeAverage :: Int -> Int -> Int -> Float
 
