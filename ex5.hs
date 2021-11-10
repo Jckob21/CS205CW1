@@ -1,11 +1,11 @@
 data Btree a = Leaf a | Unary (Btree a) a | Binary (Btree a) a (Btree a)
             deriving Show
 
-ex1 = Unary(Unary(Unary(Unary(Unary(Unary(Unary (Leaf 0) 1)2)3)4)5)6)7
-ex2 = Binary (Binary (Leaf (0, "a")) (1,"z") (Leaf (2,"x")))(3,"y")(Binary (Leaf (4,"b"))(5,"c")(Leaf (6,"d")))
-ex3 = Binary (Binary (Leaf 0) 1 (Leaf 2)) 3 (Unary (Leaf 4) 5)
-ex4 = Binary (Unary (Leaf 1) 2) 3 (Unary (Leaf 4) 5)
-ex5 = Binary (Unary (Leaf 1) 2) 3 (Binary (Leaf 4) 5 (Leaf 10))
+ex1 = Unary(Unary5(Unary(Unary(Unary(Unary(Unary (Leaf 0) 1)2)3)4)5)6)7
+ex2 = Binary (Binary (Leaf 0) 1 (Leaf 2)) 3 (Unary (Leaf 4) 5)
+ex3 = Binary (Unary (Leaf 1) 2) 3 (Unary (Leaf 4) 5)
+ex4 = Binary (Unary (Leaf 1) 2) 3 (Binary (Leaf 4) 5 (Leaf 10))
+ex5 = Binary (Binary (Leaf (0,"a"))(1,"z")(Leaf (2,"x")))(3,"y")(Binary (Leaf (4,"b"))(5,"c")(Leaf (6,"d")))
 ex6 = Leaf 10
 ex7 = Leaf (10, "a")
 
