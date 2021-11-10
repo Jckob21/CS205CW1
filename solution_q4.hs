@@ -202,7 +202,11 @@ checkIfPossibleToSolve maze (x,y) dir route = if (x >= fst (getMazeSize maze))
                                                     else checkIfPossibleToSolve maze (followDirection (x,y) newDirection) newDirection (route ++ [newDirection])
                                             }
                                             where newDirection = goDirectionOut maze (x,y) dir :: Direction
-    
+
+isStartingPositionOpen :: Maze -> Bool
+isStartingPositionOpen maze = if(isGoForwardPossible maze (0,0) North || isGoRightPossible maze (0,0) North)
+                                then True
+                                else False
 
 -- goDirectionsOut - given a position and a direction algorithm recursively finds a path to the exit  
 -- Parameters:
