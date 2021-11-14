@@ -108,11 +108,19 @@ lookupInSearchTree k (Unary l (x,v)) | k == x      = Just solution
 -- Output:
 -- Btree (Integer, a) - Outputs all values of the third input of tree type with one copy of new node
 
+
 insertInSearchTree :: Integer -> a -> Btree (Integer,a) -> Btree (Integer,a)
 
-insertInSearchTree k chr (Leaf(x,y)) = Unary newleft (x,y)
-                                       where newleft = Leaf(k,chr)
+insertInSearchTree k chr (Leaf(x,y)) = if k > x 
+                                        then Unary oldNodeToNew (k, chr)
+                                        else Unary newleft (x,y)  
+                                        where newleft = Leaf(k,chr)
+                                              oldNodeToNew = Leaf(x,y)
 
-insertInSearchTree k chr (Binary l (x,y) r) = Binary (insertInSearchTree k chr l) (x,y) r
+insertInSearchTree k chr (Binary l (x,y) r) = if k > x
+                                               then Binary l (x,y) (insertInSearchTree k chr r)
+                                               else Binary (insertInSearchTree k chr l) (x,y) r
 
-insertInSearchTree k chr (Unary l (x,y)) =  Binary l (x,y) (Leaf(k,chr))
+insertInSearchTree k chr (Unary l (x,y)) =  if k > x
+                                             then Binary l (x,y) (Leaf(k,chr))
+                                             else Unary (insertInSearchTree k chr l) (x,y)
