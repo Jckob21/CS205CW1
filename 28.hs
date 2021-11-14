@@ -431,11 +431,11 @@ complete (Binary l x r) = if complete l && complete r && abs (depth l - depth r)
 complete (Leaf x) = True
 complete (Unary l x) = lastLeaf l
 
--- complete - checks whether a binary tree is a complete tree
+-- isUnary - checks whether a node is unary
 -- Parameters:
 -- Btree a - type of current node, it can be a binary, unary or leaf
 -- Output:
--- Bool - dependly if the tree is a complete then true, otherwise it will produce false
+-- Bool - if the current node is Unary outputs True, otherwise returns false.
 
 isUnary :: Btree a -> Bool
 isUnary (Unary l x) = True
